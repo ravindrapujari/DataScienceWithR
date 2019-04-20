@@ -1,0 +1,23 @@
+install.packages("caret")
+install.packages("glmnet")
+install.packages("ISLR")
+
+library(caret)
+library(glmnet)
+library(ISLR)
+
+set.seed(123)
+
+tc = trainControl(method = "cv", number = 10,verboseIter = T)
+
+A = data.frame(Hitters)
+
+A1 = na.omit(A)
+
+model1 = train(Salary ~ AtBat + Hits + League ,method = "glmnet",data = A1, trControl = tc,tuneGrid = expand.grid(alpha = 0,lambda = seq(0,1,length=20)))
+
+varImp(model1)
+
+model1$bestTune
+
+model1$results
